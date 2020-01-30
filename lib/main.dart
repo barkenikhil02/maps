@@ -10,11 +10,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Google Maps Demo',
+      title: 'Gyms Near You',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Google Maps Demo'),
+      home: MyHomePage(title: 'Gyms Near You'),
     );
   }
 }
@@ -33,33 +33,114 @@ class _MyHomePageState extends State<MyHomePage> {
   Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center =
       const LatLng(37.42796133580664, -122.085749655962);
-  final Set<Marker> _markers = {};
-  LatLng _lastMapPosition = _center;
+      LatLng _lastMapPosition = _center;
+  final Set<Marker> _markers = {
+    Marker(
+    markerId: MarkerId('gym1'),
+    position: LatLng(19.705498, 72.791168),
+    infoWindow: InfoWindow(title: 'Gravity Gym ', snippet: "Cross-Fit"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueAzure,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('gym2'),
+    position: LatLng(19.709770, 72.791372),
+    infoWindow: InfoWindow(title: 'Bodybuilding Gym ', snippet: "Cardio"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueAzure,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('gym3'),
+    position: LatLng(19.713811, 72.795209),
+    infoWindow: InfoWindow(title: 'Platinum Gym ', snippet: "Builder"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueAzure,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('gym4'),
+    position: LatLng(19.711190, 72.795429),
+    infoWindow: InfoWindow(title: 'Gold Gym ', snippet: "Top"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueAzure,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('gym5'),
+    position: LatLng(19.708912, 72.794909),
+    infoWindow: InfoWindow(title: 'Silver Gym ', snippet: "Best"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueAzure,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('park1'),
+    position: LatLng(19.693261, 72.792026),
+    infoWindow: InfoWindow(title: 'Nana Nani Park ', snippet: "Enjoy"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueGreen,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('park2'),
+    position: LatLng(19.693261, 72.802026),
+    infoWindow: InfoWindow(title: 'Joggers Park ', snippet: "Walk"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueGreen,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('park3'),
+    position: LatLng(19.693235, 72.792026),
+    infoWindow: InfoWindow(title: 'Morning Park ', snippet: "Run"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueGreen,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('park4'),
+    position: LatLng(19.69321, 72.792026),
+    infoWindow: InfoWindow(title: 'Silence Park ', snippet: "Calm"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueGreen,
+    ),
+  ),
+  Marker(
+    markerId: MarkerId('park5'),
+    position: LatLng(19.693281, 72.792126),
+    infoWindow: InfoWindow(title: 'Happy Park', snippet: "Greeny"),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueGreen,
+    ),
+  ),
+  };
 
   static final CameraPosition initCameraPosition = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(19.7060452,72.7813192),
     zoom: 14.4746,
   );
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
+      target: LatLng(19.7060452,72.7813192),
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
 
-  void _pinHere() {
-    setState(() {
-      _markers.add(Marker(
-        markerId: MarkerId(_lastMapPosition.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Hello here',
-          snippet: 'Super!',
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
-  }
+  // void _pinHere() {
+  //   setState(() {
+  //     _markers.add(Marker(
+  //       markerId: MarkerId(_lastMapPosition.toString()),
+  //       position: _lastMapPosition,
+  //       infoWindow: InfoWindow(
+  //         title: 'Hello here',
+  //         snippet: 'Super!',
+  //       ),
+  //       icon: BitmapDescriptor.defaultMarker,
+  //     ));
+  //   });
+  // }
 
   void _onCamMove(CameraPosition position) {
     _lastMapPosition = position.target;
@@ -80,44 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
             markers: _markers,
             onCameraMove: _onCamMove,
           ),
-          SizedBox(
-            child: Center(
-              child: Icon(
-                Icons.add_location,
-                size: 40.0,
-                color: Colors.pink[600],
-              ),
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: FloatingActionButton.extended(
-                onPressed: _goToTheLake,
-                icon: Icon(Icons.directions_boat),
-                label: Text('To the lake!')),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: FloatingActionButton.extended(
-              onPressed: _pinHere,
-              icon: Icon(Icons.add_location),
-              label: Text('Pin Here'),
-              backgroundColor: Colors.pink,
-            ),
-          )
         ],
       ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
